@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js "
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,21 +15,19 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  email       String   @unique
-  password    String
-  ownedFiles  File[]   @relation("ownedFiles")
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  password          String
+  sentMessages      Message[]   @relation("sentMessages")
+  receivedMessages  Message[]   @relation("receivedMessages")
 }
 
-model File {
+model Message {
   id            Int      @id @default(autoincrement())
-  created       DateTime @default(now())
-  name          String   @db.VarChar(255)
-  url           String?
-  owner         User     @relation("ownedFiles", fields: [ownerId], references: [id])
-  ownerId       Int
-  isFolder      Boolean  @default(false)
-  parent        File?    @relation("file", fields: [parentId], references: [id], onDelete: Cascade)
-  parentId      Int?
-  children      File[]   @relation("file")
+  content       String
+  timeSent      DateTime @default(now())
+  sender        User     @relation("sentMessages", fields: [senderId], references: [id])
+  senderId      Int
+  receiver      User     @relation("receivedMessages", fields: [receiverId], references: [id])
+  receiverId    Int
 }
