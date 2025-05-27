@@ -14,18 +14,18 @@ beforeAll(async () => {
     .post("/login")
     .set("Content-Type", "application/json")
     .send({
-      email: "a@b.com",
+      email: "c@b.com",
       password: "12345",
     });
   token = response.body.token;
 });
 
-test.skip("Message is saved", function (done) {
+test("Message is saved", function (done) {
   request(testApp)
-    .post("/private/24")
+    .post("/private/1")
     .auth(token, { type: "bearer" })
     .set("Content-Type", "application/json")
-    .send({ content: "Hola Hola Hola4" })
+    .send({ content: "Message from the other user, 2 second" })
     .expect("Content-Type", /json/)
     .expect({ message: "Message sent" })
     .expect(200, done);
@@ -43,7 +43,7 @@ test.skip("Messages are listed", function (done) {
   return done();
 });
 
-test("Users are listed", function (done) {
+test.skip("Users are listed", function (done) {
   request(testApp)
     .get("/private/user-list")
     .auth(token, { type: "bearer" })

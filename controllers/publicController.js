@@ -30,6 +30,10 @@ exports.signup = [
     .trim()
     .isLength({ min: 1 })
     .escape(),
+  body("name", "Please provide a name for the user")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
 
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
@@ -45,6 +49,7 @@ exports.signup = [
         bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
           await prisma.user.create({
             data: {
+              name: req.body.name,
               email: req.body.email,
               password: hashedPassword,
             },

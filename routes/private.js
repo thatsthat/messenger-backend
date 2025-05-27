@@ -5,7 +5,7 @@ var router = express.Router();
 const privatec = require("../controllers/privateController");
 
 router.get("/user-list", privatec.userList);
-router.get("/:rxId", privatec.list);
+router.get("/:userId", privatec.list);
 router.post("/:rxId", privatec.create);
 
 module.exports = router;

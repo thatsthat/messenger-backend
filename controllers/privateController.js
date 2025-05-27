@@ -5,14 +5,14 @@ const prisma = new PrismaClient();
 
 // Handle Post create on POST.
 exports.create = asyncHandler(async (req, res, next) => {
-  await prisma.message.create({
+  const message = await prisma.message.create({
     data: {
       sender: { connect: { id: req.user.id } },
       receiver: { connect: { id: +req.params.rxId } },
       content: req.body.content,
     },
   });
-  return res.json({ message: "Message sent" });
+  return res.send(message);
 });
 
 exports.list = asyncHandler(async (req, res, next) => {
@@ -22,8 +22,8 @@ exports.list = asyncHandler(async (req, res, next) => {
     },
     where: {
       OR: [
-        { senderId: req.user.id, receiverId: +req.params.rxId },
-        { receiverId: req.user.id, senderId: +req.params.rxId },
+        { senderId: req.user.id, receiverId: +req.params.userId },
+        { receiverId: req.user.id, senderId: +req.params.userId },
       ],
     },
     select: {
