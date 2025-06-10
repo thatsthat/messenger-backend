@@ -18,7 +18,7 @@ exports.create = asyncHandler(async (req, res, next) => {
 exports.list = asyncHandler(async (req, res, next) => {
   const messages = await prisma.message.findMany({
     orderBy: {
-      timeSent: "asc",
+      timeSent: "desc",
     },
     where: {
       OR: [
